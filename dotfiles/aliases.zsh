@@ -3,7 +3,7 @@
 # --- Navigation ---
 alias ..='cd ..'
 alias ...='cd ../..'
-alias ll='ls -lah'
+alias ll='ls -la'
 
 # --- Git ---
 alias gs='git status'
