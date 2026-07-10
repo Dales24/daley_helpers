@@ -1,0 +1,51 @@
+# Example CI pipeline — a common lint -> test -> build -> deploy flow.
+# Jobs run in order via `needs`; deploy only runs on main.
+# Copy to .github/workflows/pipeline.yml to activate.
+name: Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install black flake8
+      - run: black --check .
+      - run: flake8 .
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install pytest
+      - run: pytest -q
+
+  build:
+    needs: [lint, test]        # only build if lint + test pass
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t app:${{ github.sha }} docker/
+
+  deploy:
+    needs: build               # only deploy a built image
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production     # gate with required reviewers in repo settings
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        run: echo "deploying app:${{ github.sha }}"   # replace with real deploy
