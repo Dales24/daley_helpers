@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Mock pre-commit hook: format + lint staged python before allowing a commit.
+# Install with: ln -sf ../../git/pre-commit .git/hooks/pre-commit
+set -euo pipefail
+
+staged_py=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' || true)
+[ -z "$staged_py" ] && exit 0
+
+echo "==> black"
+black --check $staged_py
+
+echo "==> flake8"
+flake8 $staged_py

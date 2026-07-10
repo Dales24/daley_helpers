@@ -1,0 +1,17 @@
+{
+  "$comment": "Sample Claude Code settings — copy to .claude/settings.json in a project.",
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(npm test:*)",
+      "Bash(pytest:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)"
+    ]
+  },
+  "env": {
+    "EXAMPLE_FLAG": "true"
+  }
+}

@@ -1,0 +1,15 @@
+# Mock Service — exposes the web Deployment inside the cluster.
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  type: ClusterIP
+  selector:
+    app: web
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
