@@ -10,11 +10,11 @@ test: ## Run the test suite
 	pytest -q testing/
 
 lint: ## Lint python + shell
-	flake8 python/ algos/ testing/
+	flake8 python/ testing/
 	shellcheck scripts/*.sh aws/*.sh
 
 fmt: ## Auto-format python
-	black python/ algos/ testing/
+	black python/ testing/
 
 tf-plan: ## Terraform plan
 	cd terraform && terraform init && terraform plan

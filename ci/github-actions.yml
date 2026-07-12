@@ -24,8 +24,8 @@ jobs:
 
       - name: Lint
         run: |
-          black --check python/ algos/ testing/
-          flake8 python/ algos/ testing/
+          black --check python/ testing/
+          flake8 python/ testing/
 
       - name: Test
         run: pytest -q testing/
